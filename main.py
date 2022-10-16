@@ -5,11 +5,11 @@ def output_of_all_ads(cursor):
     req = """ 
         SELECT 
         ads_1."Id"
-        ,ads_1."name"
-        , name_author
+        ,name
+        , author.author
         , price
         , description
-        , name_address
+        , address.address
         , is_published
         FROM ads_1 
         JOIN author ON author.author_id = ads_1.author
@@ -26,16 +26,16 @@ def ad_output_by_name(cursor, name):
     req = f""" 
         SELECT 
         ads_1."Id"
-        ,ads_1."name"
-        , name_author
+        ,name
+        , author.author
         , price
         , description
-        , name_address
+        , address.address
         , is_published
         FROM ads_1 
         JOIN author ON author.author_id = ads_1.author
         JOIN address ON address.address_id = ads_1.address        
-        WHERE name_author = '{name}'
+        WHERE author.author = '{name}'
         ORDER BY ads_1."Id"
     """
     cursor.execute(req)
@@ -48,11 +48,11 @@ def ad_output_by_price_range(cursor, from_, to):
     req = f""" 
         SELECT 
         ads_1."Id"
-        ,ads_1."name"
-        , name_author
+        ,name
+        , author.author
         , price
         , description
-        , name_address
+        , address.address
         , is_published
         FROM ads_1 
         JOIN author ON author.author_id = ads_1.author
@@ -70,16 +70,16 @@ def get_ads_from_the_city(cursor, name_city):
     req = f""" 
         SELECT 
         ads_1."Id"
-        ,ads_1."name"
-        , name_author
+        ,name
+        , author.author
         , price
         , description
-        , name_address
+        , address.address
         , is_published
         FROM ads_1 
         JOIN author ON author.author_id = ads_1.author
         JOIN address ON address.address_id = ads_1.address        
-        WHERE name_address LIKE '%{name_city}%'
+        WHERE address.address LIKE '%{name_city}%'
         ORDER BY ads_1."Id"
             """
     cursor.execute(req)
@@ -92,16 +92,16 @@ def ad_output_by_name_and_price(cursor, name, from_, to):
     req = f""" 
         SELECT 
         ads_1."Id"
-        ,ads_1."name"
-        , name_author
+        ,name
+        , author.author
         , price
         , description
-        , name_address
+        , address.address
         , is_published
         FROM ads_1 
         JOIN author ON author.author_id = ads_1.author
         JOIN address ON address.address_id = ads_1.address        
-        WHERE name_author = '{name}' and price BETWEEN '{from_}'AND '{to}'
+        WHERE author.author = '{name}' and price BETWEEN '{from_}'AND '{to}'
         ORDER BY ads_1."Id"
             """
     cursor.execute(req)
@@ -138,7 +138,7 @@ def main():
         cursor = conn.cursor()
 
     while True:
-        try:
+        # try:
             print('1.Вывести все объявления\n2.Вывести объявления конткретного пользователя\n3.Вывести объявления в диапазоне цен, которые указал пользователь отсортированных в порядке возрастания цены\n4.Вывести объявления для конкретного города\n5.Вывести информацию для определенного пользователя и цены\n6.Вывести информацию о базе данных\n7.Выход')
             user_input = int(input('Введите номер нужной операции'))
 
@@ -165,9 +165,9 @@ def main():
                     print(conn.get_dsn_parameters(), "\n")
                 case 7:
                     break
-        except:
-            print('Ошибка поиска')
-            break
+        # except:
+        #     print('Ошибка поиска')
+        #     break
 
 if __name__ == '__main__':
     main()
